@@ -1,16 +1,19 @@
-trigger:
-- main
+resources:
+  containers:
+  - container: my_container
+    image: buildpack-deps:focal
+  - container: nginx
+    image: nginx
+
 
 pool:
-  vmImage: 'ubuntu-latest' # set to windows-latest or another Windows vmImage for Windows builds
+  vmImage: 'ubuntu-20.04'
 
-variables:
-  imageName: 'pipelines-javascript-docker'
+container: my_container
+services:
+  nginx: nginx
 
 steps:
-- task: Docker@2
-  displayName: Build an image
-  inputs:
-    repository: $(imageName)
-    command: build
-    Dockerfile: app/Dockerfile
+- script: |
+    curl nginx
+  displayName: Show that nginx is running
